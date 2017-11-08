@@ -331,7 +331,9 @@ bigLivingRoomGL.prototype.setTexture = function(textureFile) {
 								this.chair.setTexture(textureFile);
 							};
 
-
+/* next = Math.pow(2, Math.ceil(Math.log(8)/Math.log(2)))
+next = Math.pow(2, Math.floor(Math.log(8)/Math.log(2)))
+							 */
 
 
 function salon(n)
