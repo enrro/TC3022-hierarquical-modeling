@@ -257,9 +257,10 @@ function bigLivingRoomGL(n)
 	// Model
 	this.table = new TableGL();	// size: 1 x 1 x 1
 	this.chair = new ChairGL();
-	this.thikness = 0.1;
 	this.n = n;
-
+	this.tableLength = (n-2)/2;
+	this.chairLength = .5;
+	this.chairOffset = .2;
 	ObjectGL.call(this);
 }
 
@@ -270,25 +271,46 @@ bigLivingRoomGL.prototype.render = function() {
 							// Drawing table
 							stackMatrix.push(mat4.clone(this.table.modelMatrix));
 							this.table.translate(0., -0.25, 0.);
-							this.table.scale((this.n/4), 1., 1.);
+							this.table.scale(this.tableLength, 1., 1.);
 							mat4.multiply(this.table.modelMatrix, this.modelMatrix, this.table.modelMatrix);
 							this.table.render();
 							this.table.modelMatrix = stackMatrix.pop();
 
-							var x = -0.5;
-							var deltaX = 0.25;
+							var firstToBeDrawn = -.34 * (this.tableLength-1);
 
-							for(var i = 0; i < 4; i++){
+							for(var i = 0; i < (this.tableLength); i++){
 								stackMatrix.push(mat4.clone(this.chair.modelMatrix));
-								this.chair.translate(x, -0.25, -0.5);
+								this.chair.translate(firstToBeDrawn, -0.25, -0.5);
 								//this.chair.scale(1., 1., 1.);
 								mat4.multiply(this.chair.modelMatrix, this.modelMatrix, this.chair.modelMatrix);
 								this.chair.render();
 								this.chair.modelMatrix = stackMatrix.pop();
-								x = x + deltaX;
+
+								stackMatrix.push(mat4.clone(this.chair.modelMatrix));
+								this.chair.translate(firstToBeDrawn, -0.25, 0.5);
+								this.chair.scale(-1., 1., -1.);
+								mat4.multiply(this.chair.modelMatrix, this.modelMatrix, this.chair.modelMatrix);
+								this.chair.render();
+								this.chair.modelMatrix = stackMatrix.pop();
+								
+								firstToBeDrawn = firstToBeDrawn + this.chairLength + this.chairOffset;
 							}
+							
+							
+							// Headboard chairs.
+							stackMatrix.push(mat4.clone(this.chair.modelMatrix));
+							this.chair.translate(-.5 * this.tableLength, -0.25, 0.0);
+							this.chair.rotate(90, 0., 1., 0.);
+							mat4.multiply(this.chair.modelMatrix, this.modelMatrix, this.chair.modelMatrix);
+							this.chair.render();
+							this.chair.modelMatrix = stackMatrix.pop();
 
-
+							stackMatrix.push(mat4.clone(this.chair.modelMatrix));
+							this.chair.translate(.5 * this.tableLength, -0.25, 0.0);
+							this.chair.rotate(-90, 0., 1., 0.);
+							mat4.multiply(this.chair.modelMatrix, this.modelMatrix, this.chair.modelMatrix);
+							this.chair.render();
+							this.chair.modelMatrix = stackMatrix.pop();
 						};
 
 bigLivingRoomGL.prototype.setDrawingMode = function(mode) {
