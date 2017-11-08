@@ -334,3 +334,43 @@ bigLivingRoomGL.prototype.setTexture = function(textureFile) {
 
 
 
+function salon(n)
+{
+	// Model
+	this.bigLivingRoomGL = new bigLivingRoomGL(8);	// size: 1 x 1 x 1
+	ObjectGL.call(this);
+}
+
+salon.prototype = Object.create(ObjectGL.prototype);
+
+salon.prototype.render = function(){
+	var stackMatrix=[];
+	stackMatrix.push(mat4.clone(this.bigLivingRoomGL.modelMatrix));
+	this.bigLivingRoomGL.translate(0., -0.25, 0.);
+	this.bigLivingRoomGL.scale(1, 1., 1.);
+	mat4.multiply(this.bigLivingRoomGL.modelMatrix, this.modelMatrix, this.bigLivingRoomGL.modelMatrix);
+	this.bigLivingRoomGL.render();
+	this.bigLivingRoomGL.modelMatrix = stackMatrix.pop();
+
+	stackMatrix.push(mat4.clone(this.bigLivingRoomGL.modelMatrix));
+	this.bigLivingRoomGL.translate(0, -0.25, 2.0);
+	this.bigLivingRoomGL.scale(1, 1., 1.);
+	mat4.multiply(this.bigLivingRoomGL.modelMatrix, this.modelMatrix, this.bigLivingRoomGL.modelMatrix);
+	this.bigLivingRoomGL.render();
+	this.bigLivingRoomGL.modelMatrix = stackMatrix.pop();
+}
+
+salon.prototype.setDrawingMode = function(mode) {
+										this.bigLivingRoomGL.setDrawingMode(mode);
+									};
+
+salon.prototype.setColor = function(r, g, b, a) {
+	if(a === undefined) {
+		a = 1.;
+	}
+	this.bigLivingRoomGL.setColor(r, g, b, a);
+};
+
+salon.prototype.setTexture = function(textureFile) {
+	this.bigLivingRoomGL.setTexture(textureFile);
+};
