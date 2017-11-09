@@ -339,6 +339,10 @@ next = Math.pow(2, Math.floor(Math.log(8)/Math.log(2)))
 function salon(n)
 {
 	// Model
+	this.n=n;
+	this.dimention = Math.pow(2, Math.ceil(Math.log(this.n)/Math.log(2)));
+	this.tzOffSet = 2.;
+	this.txOffSet = 5.;
 	this.bigLivingRoomGL = new bigLivingRoomGL(8);	// size: 1 x 1 x 1
 	ObjectGL.call(this);
 }
@@ -347,19 +351,25 @@ salon.prototype = Object.create(ObjectGL.prototype);
 
 salon.prototype.render = function(){
 	var stackMatrix=[];
-	stackMatrix.push(mat4.clone(this.bigLivingRoomGL.modelMatrix));
-	this.bigLivingRoomGL.translate(0., -0.25, 0.);
-	this.bigLivingRoomGL.scale(1, 1., 1.);
-	mat4.multiply(this.bigLivingRoomGL.modelMatrix, this.modelMatrix, this.bigLivingRoomGL.modelMatrix);
-	this.bigLivingRoomGL.render();
-	this.bigLivingRoomGL.modelMatrix = stackMatrix.pop();
+	tz=0.;
+	tx=0.;
 
-	stackMatrix.push(mat4.clone(this.bigLivingRoomGL.modelMatrix));
-	this.bigLivingRoomGL.translate(0, -0.25, 2.0);
-	this.bigLivingRoomGL.scale(1, 1., 1.);
-	mat4.multiply(this.bigLivingRoomGL.modelMatrix, this.modelMatrix, this.bigLivingRoomGL.modelMatrix);
-	this.bigLivingRoomGL.render();
-	this.bigLivingRoomGL.modelMatrix = stackMatrix.pop();
+	for(var i = 0; i < this.n; i++){
+		stackMatrix.push(mat4.clone(this.bigLivingRoomGL.modelMatrix));
+		this.bigLivingRoomGL.translate(tx, -0.25, tz);
+		this.bigLivingRoomGL.scale(1, 1., 1.);
+		mat4.multiply(this.bigLivingRoomGL.modelMatrix, this.modelMatrix, this.bigLivingRoomGL.modelMatrix);
+		this.bigLivingRoomGL.render();
+		this.bigLivingRoomGL.modelMatrix = stackMatrix.pop();
+		next = Math.pow(2, Math.ceil(Math.log(i)/Math.log(2)));
+		if(i<next){
+			tz=0;
+			tx = tx + this.txOffSet;
+		} else if(i==next){
+			tz = tz + this.tzOffSet;
+		}
+	}		
+
 }
 
 salon.prototype.setDrawingMode = function(mode) {

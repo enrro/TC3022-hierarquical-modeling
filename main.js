@@ -47,7 +47,7 @@ Scene.prototype.render = function() {
 function initScene()
 {
 	//var obj1 = new bigLivingRoomGL(4);
-	var obj1 = new salon(4);
+	var obj1 = new salon(8);
 	obj1.setTexture("jupiter.jpg");
 	obj1.setDrawingMode(TEXTURE);
 	scene = new Scene();
