@@ -36,4 +36,20 @@ function initEventHandlers()
 							lastX = x;
 							lastY = y;
 						};
+
+	document.onkeypress = function(event) {
+		var x = event.which || event.keyCode;
+		if(x == 119) {
+			eye[2] += -0.1;
+		}
+		if(x == 115) {
+			eye[2] += 0.1;
+		}
+		if(x == 97) {
+			target[0] += -0.05;
+		}
+		if(x == 100) {
+			target[0] += 0.1;
+		}
+	}
 }
