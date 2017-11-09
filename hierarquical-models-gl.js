@@ -332,14 +332,15 @@ bigLivingRoomGL.prototype.setTexture = function(textureFile) {
 							};
 
 
-function salon(n)
+function salon(n, m)
 {
 	
 	// Model
 	this.n=n;
 	this.tzOffSet = 2.;
-	this.txOffSet = 5.;
-	this.bigLivingRoomGL = new bigLivingRoomGL(8);	// size: 1 x 1 x 1
+	this.txOffSet = 2.;
+	this.bigLivingRoomGL = new bigLivingRoomGL(m);	// size: 1 x 1 x 1
+	this.tableLength = (m-2)/2;
 	ObjectGL.call(this);
 }
 
@@ -349,6 +350,8 @@ salon.prototype.render = function(){
 	var stackMatrix=[];
 	tz=0.;
 	tx=0.;
+	txOffSet=this.txOffSet + this.tableLength;
+	
 
 	for(var i = 0; i < this.n; i++){
 		stackMatrix.push(mat4.clone(this.bigLivingRoomGL.modelMatrix));
@@ -360,7 +363,7 @@ salon.prototype.render = function(){
 		next = Math.pow(2, Math.ceil(Math.log(i)/Math.log(2)));
 		if(i<next){
 			tz=0;
-			tx = tx + this.txOffSet;
+			tx = tx + txOffSet;
 		} else if(i==next){
 			tz = tz + this.tzOffSet;
 		}
