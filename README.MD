@@ -12,3 +12,7 @@ representado por un modelo jerárquico compuesto por las siguientes geometrías
 
 Parametrizar la escena del salón de eventos en términos del número de mesas, así como del
 número de comensales por mesa.
+
+```
+pan with W,S and zoom with A, D
+```
